@@ -1,4 +1,17 @@
+"use client";
+
+import { useState } from "react";
+import dayjs, { Dayjs } from "dayjs";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { Field, Label } from "@/components/Fieldset";
+import { Input } from "@/components/Input";
+
 export default function Period() {
+  const [startDate, setStartDate] = useState<Dayjs | null>(dayjs(""));
+  const [periodDate, setPeriodDate] = useState<string>("");
+
   return (
     <div className="flex flex-col items-center gap-8 p-4">
       <main className="flex flex-col items-center gap-12 w-full">
@@ -7,12 +20,24 @@ export default function Period() {
           <br />
           금주 기간을 입력하세요.
         </p>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            label="시작 일자"
+            value={startDate}
+            onChange={(newValue: Dayjs | null) => setStartDate(newValue)}
+          />
+        </LocalizationProvider>
         <section className="flex justify-between items-center w-full">
-          <div className="text-3xl">시작 일자</div>
-          <div className="text-xl">08.24</div>
-        </section>
-        <section className="flex justify-between items-center w-full">
-          <div className="text-3xl">금주 기간</div>
+          <Field>
+            <Label>금주 기간</Label>
+            <Input
+              type="number"
+              value={periodDate}
+              onChange={(e: { target: { value: string } }) =>
+                setPeriodDate(e.target.value)
+              }
+            />
+          </Field>
           <div className="text-xl">19일</div>
         </section>
       </main>
