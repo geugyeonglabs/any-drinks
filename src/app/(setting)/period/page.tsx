@@ -13,8 +13,8 @@ export default function Period() {
   const [periodDate, setPeriodDate] = useState<string>("");
 
   return (
-    <div className="flex flex-col items-center gap-8 p-4">
-      <main className="flex flex-col items-center gap-12 w-full">
+    <div className="flex flex-col items-center gap-6 p-4">
+      <main className="flex flex-col items-center gap-8 w-full">
         <p className="text-gray-400">
           금주 시작 일자와
           <br />
@@ -38,11 +38,14 @@ export default function Period() {
               }
             />
           </Field>
-          <div className="text-xl">19일</div>
+          <div className="text-xl">{periodDate}일</div>
         </section>
       </main>
       <footer className="flex flex-col items-center text-gray-400">
-        <div>금주 기간은 08.24 ~ 09.10 입니다.</div>
+        <div>
+          금주 기간은 {startDate && startDate.month() + 1}.{startDate?.date()} ~
+          09.10 입니다.
+        </div>
         <div>음주 가능 기간은 09.11 ~ 09.11 입니다.</div>
       </footer>
     </div>
