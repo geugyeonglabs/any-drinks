@@ -21,7 +21,7 @@ export default function Home() {
             절주 <span className="text-2xl font-medium text-black">7</span>일차
           </div>
           <div>
-            금주 <span className="text-2xl font-medium text-black">7</span>일차
+            금주 <span className="text-2xl font-medium text-black">7</span>일째
           </div>
         </section>
         <section className="flex flex-col items-center gap-6">
