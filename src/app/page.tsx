@@ -1,14 +1,15 @@
 "use client";
 
+import Link from "next/link";
 import SettingsIcon from "@mui/icons-material/Settings";
 
 export default function Home() {
   return (
-    <div className="h-dvh">
+    <>
       <header className="mb-[5dvh] p-2 text-right">
-        <button>
-          <SettingsIcon />
-        </button>
+        <Link href="/period">
+          <SettingsIcon fontSize="large" />
+        </Link>
       </header>
       <main className="flex flex-col justify-center items-center gap-16">
         <section className="flex flex-col items-center gap-4">
@@ -35,6 +36,6 @@ export default function Home() {
         <div>금주 기간은 08.16 ~ 08.22 입니다.</div>
         <div>음주가능 기간은 08.23 ~ 08.23 입니다.</div>
       </footer>
-    </div>
+    </>
   );
 }
