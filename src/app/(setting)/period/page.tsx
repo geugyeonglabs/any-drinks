@@ -9,8 +9,8 @@ import { Field, Label } from "@/components/Fieldset";
 import { Input } from "@/components/Input";
 
 export default function Period() {
-  const [startDate, setStartDate] = useState<Dayjs | null>(dayjs(""));
-  const [periodDate, setPeriodDate] = useState<string>("");
+  const [startDate, setStartDate] = useState<Dayjs | null>(dayjs(new Date()));
+  const [period, setPeriod] = useState<string>("7");
 
   return (
     <div className="flex flex-col items-center gap-6 p-4">
@@ -32,21 +32,27 @@ export default function Period() {
             <Label>금주 기간</Label>
             <Input
               type="number"
-              value={periodDate}
+              value={period}
               onChange={(e: { target: { value: string } }) =>
-                setPeriodDate(e.target.value)
+                setPeriod(e.target.value)
               }
             />
           </Field>
-          <div className="text-xl">{periodDate}일</div>
+          <div className="text-xl">{period}일</div>
         </section>
       </main>
       <footer className="flex flex-col items-center text-gray-400">
         <div>
-          금주 기간은 {startDate && startDate.month() + 1}.{startDate?.date()} ~
-          09.10 입니다.
+          금주 기간은 {startDate && startDate.month() + 1}.{startDate?.date()}
+          &nbsp;~&nbsp;
+          {startDate && startDate.add(Number(period) - 1, "day").month() + 1}.
+          {startDate && startDate.add(Number(period) - 1, "day").date()} 입니다.
         </div>
-        <div>음주 가능 기간은 09.11 ~ 09.11 입니다.</div>
+        <div>
+          음주 가능 기간은&nbsp;
+          {startDate && startDate.add(Number(period), "day").month() + 1}.
+          {startDate && startDate.add(Number(period), "day").date()} ~ 입니다.
+        </div>
       </footer>
     </div>
   );
