@@ -1,8 +1,23 @@
 "use client";
 
-import { ReactNode } from "react";
+import {
+  useState,
+  createContext,
+  ReactNode,
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+} from "react";
 import { useRouter } from "next/navigation";
+import dayjs, { Dayjs } from "dayjs";
 import { ChevronDownIcon } from "@heroicons/react/16/solid";
+
+type Setting = {
+  startDate: Dayjs | null;
+  setStartDate: Dispatch<SetStateAction<Dayjs | null>>;
+  period: string;
+  setPeriod: Dispatch<SetStateAction<string>>;
+};
 
 const tabs = [
   { name: "기간별 금주", href: "#", current: true },
@@ -13,10 +28,15 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
+export const SettingContext = createContext<Setting | null>(null);
+
 export default function SettingLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
 
-  const handleTab = (e: { target: { value: string } }) => {
+  const [startDate, setStartDate] = useState<Dayjs | null>(dayjs(new Date()));
+  const [period, setPeriod] = useState<string>("7");
+
+  const handleTab = (e: ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value === "기간별 금주") {
       router.replace("/period");
 
@@ -24,6 +44,10 @@ export default function SettingLayout({ children }: { children: ReactNode }) {
     }
 
     router.replace("/week");
+  };
+
+  const handleSave = () => {
+    console.log("test");
   };
 
   return (
@@ -44,6 +68,7 @@ export default function SettingLayout({ children }: { children: ReactNode }) {
             <button
               type="button"
               className="ml-3 inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-indigo-500 dark:shadow-none dark:hover:bg-indigo-400 dark:focus-visible:outline-indigo-500"
+              onClick={handleSave}
             >
               저장
             </button>
@@ -87,7 +112,9 @@ export default function SettingLayout({ children }: { children: ReactNode }) {
           </div>
         </div>
       </div>
-      {children}
+      <SettingContext value={{ startDate, setStartDate, period, setPeriod }}>
+        {children}
+      </SettingContext>
     </div>
   );
 }
