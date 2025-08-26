@@ -3,6 +3,7 @@
 import {
   useState,
   createContext,
+  useContext,
   ReactNode,
   ChangeEvent,
   Dispatch,
@@ -11,6 +12,7 @@ import {
 import { useRouter } from "next/navigation";
 import dayjs, { Dayjs } from "dayjs";
 import { ChevronDownIcon } from "@heroicons/react/16/solid";
+import { GlobalContext } from "@/app/GlobalProvider";
 
 type Setting = {
   startDate: Dayjs | null;
@@ -36,6 +38,8 @@ export default function SettingLayout({ children }: { children: ReactNode }) {
   const [startDate, setStartDate] = useState<Dayjs | null>(dayjs(new Date()));
   const [period, setPeriod] = useState<string>("7");
 
+  const global = useContext(GlobalContext);
+
   const handleTab = (e: ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value === "기간별 금주") {
       router.replace("/period");
@@ -47,7 +51,10 @@ export default function SettingLayout({ children }: { children: ReactNode }) {
   };
 
   const handleSave = () => {
-    console.log("test");
+    global?.setGlobalStartDate(startDate);
+    global?.setGlobalPeriod(period);
+
+    router.push("/");
   };
 
   return (

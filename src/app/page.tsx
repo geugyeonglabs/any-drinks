@@ -1,9 +1,13 @@
 "use client";
 
+import { useContext } from "react";
 import Link from "next/link";
 import SettingsIcon from "@mui/icons-material/Settings";
+import { GlobalContext } from "@/app/GlobalProvider";
 
 export default function Home() {
+  const global = useContext(GlobalContext);
+
   return (
     <>
       <header className="mb-[5dvh] p-2 text-right">
@@ -33,8 +37,35 @@ export default function Home() {
         </section>
       </main>
       <footer className="absolute bottom-8 flex flex-col items-center w-dvw text-gray-400">
-        <div>금주 기간은 08.16 ~ 08.22 입니다.</div>
-        <div>음주가능 기간은 08.23 ~ 08.23 입니다.</div>
+        <div>
+          금주 기간은&nbsp;
+          {global?.globalStartDate && global?.globalStartDate.month() + 1}.
+          {global?.globalStartDate?.date()}
+          &nbsp;~&nbsp;
+          {global?.globalStartDate &&
+            global?.globalStartDate
+              .add(Number(global?.globalPeriod) - 1, "day")
+              .month() + 1}
+          .
+          {global?.globalStartDate &&
+            global?.globalStartDate
+              .add(Number(global?.globalPeriod) - 1, "day")
+              .date()}{" "}
+          입니다.
+        </div>
+        <div>
+          음주 가능 기간은&nbsp;
+          {global?.globalStartDate &&
+            global?.globalStartDate
+              .add(Number(global?.globalPeriod), "day")
+              .month() + 1}
+          .
+          {global?.globalStartDate &&
+            global?.globalStartDate
+              .add(Number(global?.globalPeriod), "day")
+              .date()}{" "}
+          ~ 입니다.
+        </div>
       </footer>
     </>
   );
