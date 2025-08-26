@@ -1,8 +1,8 @@
 "use client";
 
 import {
-  useState,
   createContext,
+  useState,
   ReactNode,
   Dispatch,
   SetStateAction,
@@ -19,9 +19,7 @@ type Global = {
 export const GlobalContext = createContext<Global | null>(null);
 
 export function GlobalProvider({ children }: { children: ReactNode }) {
-  const [globalStartDate, setGlobalStartDate] = useState<Dayjs | null>(
-    dayjs(new Date())
-  );
+  const [globalStartDate, setGlobalStartDate] = useState<Dayjs | null>(dayjs());
   const [globalPeriod, setGlobalPeriod] = useState<string>("7");
 
   return (

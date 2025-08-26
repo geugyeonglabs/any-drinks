@@ -1,9 +1,9 @@
 "use client";
 
 import {
-  useState,
   createContext,
   useContext,
+  useState,
   ReactNode,
   ChangeEvent,
   Dispatch,
@@ -35,10 +35,10 @@ export const SettingContext = createContext<Setting | null>(null);
 export default function SettingLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
 
-  const [startDate, setStartDate] = useState<Dayjs | null>(dayjs(new Date()));
-  const [period, setPeriod] = useState<string>("7");
-
   const global = useContext(GlobalContext);
+
+  const [startDate, setStartDate] = useState<Dayjs | null>(dayjs());
+  const [period, setPeriod] = useState<string>("7");
 
   const handleTab = (e: ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value === "기간별 금주") {
