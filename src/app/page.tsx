@@ -1,15 +1,59 @@
 "use client";
 
-import { useContext } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { GlobalContext } from "@/app/GlobalProvider";
+import {
+  initDB,
+  addSetting,
+  STORE_NAME,
+  SavedSetting,
+} from "@/app/(setting)/layout";
 
 export default function Home() {
   const today = dayjs();
 
-  const global = useContext(GlobalContext);
+  const [savedStartDate, setSavedStartDate] = useState<Dayjs | null>();
+  const [savedPeriod, setSavedPeriod] = useState<string>();
+
+  const getSetting = async (): Promise<SavedSetting> => {
+    const db = await initDB();
+
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(STORE_NAME, "readonly");
+      const store = tx.objectStore(STORE_NAME);
+      const request = store.getAll();
+
+      request.onsuccess = () => {
+        resolve(request.result[request.result.length - 1] as SavedSetting);
+      };
+
+      request.onerror = () => {
+        reject(request.error);
+      };
+    });
+  };
+
+  const loadSetting = useCallback(async () => {
+    const savedSetting = await getSetting();
+
+    if (!savedSetting) {
+      addSetting({
+        startDate: dayjs().toISOString(),
+        period: "7",
+      });
+
+      location.reload();
+    }
+
+    setSavedStartDate(dayjs(savedSetting.startDate));
+    setSavedPeriod(savedSetting.period);
+  }, []);
+
+  useEffect(() => {
+    loadSetting();
+  }, [loadSetting]);
 
   return (
     <>
@@ -34,7 +78,7 @@ export default function Home() {
         <section className="text-xl text-gray-500">
           금주&nbsp;
           <span className="text-2xl font-medium text-black">
-            {today.diff(global?.globalStartDate, "day") + 1}
+            {today.diff(savedStartDate, "day") + 1}
           </span>
           일째
         </section>
@@ -42,8 +86,8 @@ export default function Home() {
           <div className="text-2xl">금주 종료</div>
           <div>
             <span className="text-9xl text-blue-700">
-              {global?.globalStartDate
-                ?.add(Number(global?.globalPeriod) + 1, "day")
+              {savedStartDate
+                ?.add(Number(savedPeriod) + 1, "day")
                 .diff(today, "day")}
               일
             </span>
@@ -54,31 +98,23 @@ export default function Home() {
       <footer className="absolute bottom-8 flex flex-col items-center w-dvw text-gray-400">
         <div>
           금주 기간은&nbsp;
-          {global?.globalStartDate && global?.globalStartDate.month() + 1}.
-          {global?.globalStartDate?.date()}
+          {savedStartDate && savedStartDate.month() + 1}.
+          {savedStartDate?.date()}
           &nbsp;~&nbsp;
-          {global?.globalStartDate &&
-            global?.globalStartDate
-              .add(Number(global?.globalPeriod) - 1, "day")
-              .month() + 1}
+          {savedStartDate &&
+            savedStartDate.add(Number(savedPeriod) - 1, "day").month() + 1}
           .
-          {global?.globalStartDate &&
-            global?.globalStartDate
-              .add(Number(global?.globalPeriod) - 1, "day")
-              .date()}{" "}
+          {savedStartDate &&
+            savedStartDate.add(Number(savedPeriod) - 1, "day").date()}{" "}
           입니다.
         </div>
         <div>
           음주 가능 기간은&nbsp;
-          {global?.globalStartDate &&
-            global?.globalStartDate
-              .add(Number(global?.globalPeriod), "day")
-              .month() + 1}
+          {savedStartDate &&
+            savedStartDate.add(Number(savedPeriod), "day").month() + 1}
           .
-          {global?.globalStartDate &&
-            global?.globalStartDate
-              .add(Number(global?.globalPeriod), "day")
-              .date()}{" "}
+          {savedStartDate &&
+            savedStartDate.add(Number(savedPeriod), "day").date()}{" "}
           ~ 입니다.
         </div>
       </footer>

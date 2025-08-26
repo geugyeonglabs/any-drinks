@@ -2,7 +2,6 @@
 
 import {
   createContext,
-  useContext,
   useState,
   ReactNode,
   ChangeEvent,
@@ -12,7 +11,6 @@ import {
 import { useRouter } from "next/navigation";
 import dayjs, { Dayjs } from "dayjs";
 import { ChevronDownIcon } from "@heroicons/react/16/solid";
-import { GlobalContext } from "@/app/GlobalProvider";
 
 type Setting = {
   startDate: Dayjs | null;
@@ -30,12 +28,62 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
+export type SavedSetting = {
+  startDate: string;
+  period: string;
+};
+
+export const DB_NAME = "AnyDrinksDB";
+export const DB_VERSION = 1;
+export const STORE_NAME = "setting";
+
+export const initDB = async (): Promise<IDBDatabase> => {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+    request.onupgradeneeded = (event) => {
+      const db = (event.target as IDBOpenDBRequest).result;
+
+      if (!db.objectStoreNames.contains(STORE_NAME)) {
+        db.createObjectStore(STORE_NAME, {
+          keyPath: "id",
+          autoIncrement: true,
+        });
+      }
+    };
+
+    request.onsuccess = () => {
+      resolve(request.result);
+    };
+
+    request.onerror = () => {
+      reject(request.error);
+    };
+  });
+};
+
+export const addSetting = async (setting: SavedSetting): Promise<number> => {
+  const db = await initDB();
+
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, "readwrite");
+    const store = tx.objectStore(STORE_NAME);
+    const request = store.add(setting);
+
+    request.onsuccess = () => {
+      resolve(request.result as number);
+    };
+
+    request.onerror = () => {
+      reject(request.error);
+    };
+  });
+};
+
 export const SettingContext = createContext<Setting | null>(null);
 
 export default function SettingLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
-
-  const global = useContext(GlobalContext);
 
   const [startDate, setStartDate] = useState<Dayjs | null>(dayjs());
   const [period, setPeriod] = useState<string>("7");
@@ -50,9 +98,11 @@ export default function SettingLayout({ children }: { children: ReactNode }) {
     router.replace("/week");
   };
 
-  const handleSave = () => {
-    global?.setGlobalStartDate(startDate);
-    global?.setGlobalPeriod(period);
+  const handleSave = async () => {
+    addSetting({
+      startDate: startDate?.toISOString() || "",
+      period,
+    });
 
     router.push("/");
   };
