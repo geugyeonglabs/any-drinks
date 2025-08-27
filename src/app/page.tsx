@@ -64,7 +64,7 @@ export default function Home() {
           <SettingsIcon fontSize="large" />
         </Link>
       </header>
-      <main className="flex flex-col justify-center items-center gap-16">
+      <main className="flex flex-col justify-center items-center gap-8">
         <section className="flex flex-col items-center gap-4">
           <div className="text-5xl font-medium">{today.date()}</div>
           <div className="text-3xl">
