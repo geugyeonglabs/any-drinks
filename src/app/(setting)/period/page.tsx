@@ -25,7 +25,7 @@ export default function Period() {
             label="시작 일자"
             value={setting?.startDate}
             onChange={(newValue: Dayjs | null) =>
-              setting?.setStartDate(dayjs(newValue).startOf("day"))
+              setting?.setStartDate(dayjs(newValue).startOf("date"))
             }
           />
         </LocalizationProvider>

@@ -17,6 +17,8 @@ type Setting = {
   setStartDate: Dispatch<SetStateAction<Dayjs | null>>;
   period: string;
   setPeriod: Dispatch<SetStateAction<string>>;
+  week: string[];
+  setWeek: Dispatch<SetStateAction<string[]>>;
 };
 
 function classNames(...classes: string[]) {
@@ -81,15 +83,16 @@ export default function SettingLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
   const segment = useSelectedLayoutSegment();
 
-  const [startDate, setStartDate] = useState<Dayjs | null>(
-    dayjs().startOf("day")
-  );
-  const [period, setPeriod] = useState<string>("7");
-
   const tabs = [
     { name: "기간별 금주", href: "#", current: segment === "period" },
     { name: "요일별 금주", href: "#", current: segment === "week" },
   ];
+
+  const [startDate, setStartDate] = useState<Dayjs | null>(
+    dayjs().startOf("date")
+  );
+  const [period, setPeriod] = useState<string>("7");
+  const [week, setWeek] = useState<string[]>([]);
 
   const handleTab = (e: ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value === "기간별 금주") {
@@ -102,10 +105,16 @@ export default function SettingLayout({ children }: { children: ReactNode }) {
   };
 
   const handleSave = async () => {
-    addSetting({
-      startDate: startDate?.toISOString() || "",
-      period,
-    });
+    if (segment === "period") {
+      addSetting({
+        startDate: startDate?.toISOString() || "",
+        period,
+      });
+    }
+
+    if (segment === "week") {
+      localStorage.setItem("week", week.toString());
+    }
 
     router.push("/");
   };
@@ -172,7 +181,9 @@ export default function SettingLayout({ children }: { children: ReactNode }) {
           </div>
         </div>
       </div>
-      <SettingContext value={{ startDate, setStartDate, period, setPeriod }}>
+      <SettingContext
+        value={{ startDate, setStartDate, period, setPeriod, week, setWeek }}
+      >
         {children}
       </SettingContext>
     </div>

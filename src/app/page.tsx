@@ -12,7 +12,7 @@ import {
 } from "@/app/(setting)/layout";
 
 export default function Home() {
-  const today = dayjs().startOf("day");
+  const today = dayjs().startOf("date");
 
   const [savedStartDate, setSavedStartDate] = useState<Dayjs | null>();
   const [savedPeriod, setSavedPeriod] = useState<string>();
@@ -40,7 +40,7 @@ export default function Home() {
 
     if (!savedSetting) {
       addSetting({
-        startDate: dayjs().toISOString(),
+        startDate: dayjs().startOf("date").toISOString(),
         period: "7",
       });
 
