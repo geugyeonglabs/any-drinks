@@ -12,13 +12,11 @@ export default function Week() {
       <main className="flex flex-col items-center gap-8">
         <p className="text-gray-400">금주를 진행할 요일을 입력해주세요</p>
         <section className="flex gap-2">
-          {setting?.week.includes("0") ? (
+          {setting?.weeks.includes("0") ? (
             <Button
               color="blue"
               onClick={() =>
-                setting?.setWeek(
-                  setting.week.filter((element) => element !== "0")
-                )
+                setting?.setWeeks(setting.weeks.filter((week) => week !== "0"))
               }
             >
               일
@@ -26,18 +24,16 @@ export default function Week() {
           ) : (
             <Button
               outline
-              onClick={() => setting?.setWeek([...setting?.week, "0"])}
+              onClick={() => setting?.setWeeks([...setting?.weeks, "0"])}
             >
               일
             </Button>
           )}
-          {setting?.week.includes("1") ? (
+          {setting?.weeks.includes("1") ? (
             <Button
               color="blue"
               onClick={() =>
-                setting?.setWeek(
-                  setting.week.filter((element) => element !== "1")
-                )
+                setting?.setWeeks(setting.weeks.filter((week) => week !== "1"))
               }
             >
               월
@@ -45,18 +41,16 @@ export default function Week() {
           ) : (
             <Button
               outline
-              onClick={() => setting?.setWeek([...setting?.week, "1"])}
+              onClick={() => setting?.setWeeks([...setting?.weeks, "1"])}
             >
               월
             </Button>
           )}
-          {setting?.week.includes("2") ? (
+          {setting?.weeks.includes("2") ? (
             <Button
               color="blue"
               onClick={() =>
-                setting?.setWeek(
-                  setting.week.filter((element) => element !== "2")
-                )
+                setting?.setWeeks(setting.weeks.filter((week) => week !== "2"))
               }
             >
               화
@@ -64,18 +58,16 @@ export default function Week() {
           ) : (
             <Button
               outline
-              onClick={() => setting?.setWeek([...setting?.week, "2"])}
+              onClick={() => setting?.setWeeks([...setting?.weeks, "2"])}
             >
               화
             </Button>
           )}
-          {setting?.week.includes("3") ? (
+          {setting?.weeks.includes("3") ? (
             <Button
               color="blue"
               onClick={() =>
-                setting?.setWeek(
-                  setting.week.filter((element) => element !== "3")
-                )
+                setting?.setWeeks(setting.weeks.filter((week) => week !== "3"))
               }
             >
               수
@@ -83,18 +75,16 @@ export default function Week() {
           ) : (
             <Button
               outline
-              onClick={() => setting?.setWeek([...setting?.week, "3"])}
+              onClick={() => setting?.setWeeks([...setting?.weeks, "3"])}
             >
               수
             </Button>
           )}
-          {setting?.week.includes("4") ? (
+          {setting?.weeks.includes("4") ? (
             <Button
               color="blue"
               onClick={() =>
-                setting?.setWeek(
-                  setting.week.filter((element) => element !== "4")
-                )
+                setting?.setWeeks(setting.weeks.filter((week) => week !== "4"))
               }
             >
               목
@@ -102,18 +92,16 @@ export default function Week() {
           ) : (
             <Button
               outline
-              onClick={() => setting?.setWeek([...setting?.week, "4"])}
+              onClick={() => setting?.setWeeks([...setting?.weeks, "4"])}
             >
               목
             </Button>
           )}
-          {setting?.week.includes("5") ? (
+          {setting?.weeks.includes("5") ? (
             <Button
               color="blue"
               onClick={() =>
-                setting?.setWeek(
-                  setting.week.filter((element) => element !== "5")
-                )
+                setting?.setWeeks(setting.weeks.filter((week) => week !== "5"))
               }
             >
               금
@@ -121,18 +109,16 @@ export default function Week() {
           ) : (
             <Button
               outline
-              onClick={() => setting?.setWeek([...setting?.week, "5"])}
+              onClick={() => setting?.setWeeks([...setting?.weeks, "5"])}
             >
               금
             </Button>
           )}
-          {setting?.week.includes("6") ? (
+          {setting?.weeks.includes("6") ? (
             <Button
               color="blue"
               onClick={() =>
-                setting?.setWeek(
-                  setting.week.filter((element) => element !== "6")
-                )
+                setting?.setWeeks(setting.weeks.filter((week) => week !== "6"))
               }
             >
               토
@@ -140,7 +126,7 @@ export default function Week() {
           ) : (
             <Button
               outline
-              onClick={() => setting?.setWeek([...setting?.week, "6"])}
+              onClick={() => setting?.setWeeks([...setting?.weeks, "6"])}
             >
               토
             </Button>

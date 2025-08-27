@@ -16,6 +16,7 @@ export default function Home() {
 
   const [savedStartDate, setSavedStartDate] = useState<Dayjs | null>();
   const [savedPeriod, setSavedPeriod] = useState<string>();
+  const [savedWeeks, setSavedWeeks] = useState<string[]>();
 
   const getSetting = async (): Promise<SavedSetting> => {
     const db = await initDB();
@@ -49,6 +50,7 @@ export default function Home() {
 
     setSavedStartDate(dayjs(savedSetting.startDate));
     setSavedPeriod(savedSetting.period);
+    setSavedWeeks(localStorage.getItem("weeks")?.split(","));
   }, []);
 
   useEffect(() => {
@@ -96,7 +98,30 @@ export default function Home() {
         </section>
       </main>
       <footer className="absolute bottom-8 flex flex-col items-center w-dvw text-gray-400">
-        <div>
+        {savedWeeks?.[0] && (
+          <p>
+            금주 요일 :&nbsp;
+            {savedWeeks.map((week, index) => {
+              switch (week) {
+                case "0":
+                  return index === savedWeeks.length - 1 ? "일요일" : "일,";
+                case "1":
+                  return index === savedWeeks.length - 1 ? "월요일" : "월,";
+                case "2":
+                  return index === savedWeeks.length - 1 ? "화요일" : "화,";
+                case "3":
+                  return index === savedWeeks.length - 1 ? "수요일" : "수,";
+                case "4":
+                  return index === savedWeeks.length - 1 ? "목요일" : "목,";
+                case "5":
+                  return index === savedWeeks.length - 1 ? "금요일" : "금,";
+                case "6":
+                  return index === savedWeeks.length - 1 ? "토요일" : "토,";
+              }
+            })}
+          </p>
+        )}
+        <p>
           금주 기간은&nbsp;
           {savedStartDate && savedStartDate.month() + 1}.
           {savedStartDate?.date()}
@@ -107,8 +132,8 @@ export default function Home() {
           {savedStartDate &&
             savedStartDate.add(Number(savedPeriod) - 1, "day").date()}{" "}
           입니다.
-        </div>
-        <div>
+        </p>
+        <p>
           음주 가능 기간은&nbsp;
           {savedStartDate &&
             savedStartDate.add(Number(savedPeriod), "day").month() + 1}
@@ -116,7 +141,7 @@ export default function Home() {
           {savedStartDate &&
             savedStartDate.add(Number(savedPeriod), "day").date()}{" "}
           ~ 입니다.
-        </div>
+        </p>
       </footer>
     </>
   );

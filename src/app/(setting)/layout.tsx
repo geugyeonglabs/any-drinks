@@ -17,8 +17,8 @@ type Setting = {
   setStartDate: Dispatch<SetStateAction<Dayjs | null>>;
   period: string;
   setPeriod: Dispatch<SetStateAction<string>>;
-  week: string[];
-  setWeek: Dispatch<SetStateAction<string[]>>;
+  weeks: string[];
+  setWeeks: Dispatch<SetStateAction<string[]>>;
 };
 
 function classNames(...classes: string[]) {
@@ -92,7 +92,7 @@ export default function SettingLayout({ children }: { children: ReactNode }) {
     dayjs().startOf("date")
   );
   const [period, setPeriod] = useState<string>("7");
-  const [week, setWeek] = useState<string[]>([]);
+  const [weeks, setWeeks] = useState<string[]>([]);
 
   const handleTab = (e: ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value === "기간별 금주") {
@@ -113,7 +113,7 @@ export default function SettingLayout({ children }: { children: ReactNode }) {
     }
 
     if (segment === "week") {
-      localStorage.setItem("week", week.toString());
+      localStorage.setItem("weeks", weeks.sort().toString());
     }
 
     router.push("/");
@@ -182,7 +182,7 @@ export default function SettingLayout({ children }: { children: ReactNode }) {
         </div>
       </div>
       <SettingContext
-        value={{ startDate, setStartDate, period, setPeriod, week, setWeek }}
+        value={{ startDate, setStartDate, period, setPeriod, weeks, setWeeks }}
       >
         {children}
       </SettingContext>

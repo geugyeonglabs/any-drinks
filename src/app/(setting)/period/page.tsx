@@ -44,7 +44,7 @@ export default function Period() {
         </section>
       </main>
       <footer className="flex flex-col items-center text-gray-400">
-        <div>
+        <p>
           금주 기간은 {setting?.startDate && setting?.startDate.month() + 1}.
           {setting?.startDate?.date()}
           &nbsp;~&nbsp;
@@ -57,8 +57,8 @@ export default function Period() {
               .add(Number(setting?.period) - 1, "day")
               .date()}{" "}
           입니다.
-        </div>
-        <div>
+        </p>
+        <p>
           음주 가능 기간은&nbsp;
           {setting?.startDate &&
             setting?.startDate.add(Number(setting?.period), "day").month() + 1}
@@ -66,7 +66,7 @@ export default function Period() {
           {setting?.startDate &&
             setting?.startDate.add(Number(setting?.period), "day").date()}{" "}
           ~ 입니다.
-        </div>
+        </p>
       </footer>
     </div>
   );
