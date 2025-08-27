@@ -118,7 +118,7 @@ export default function SettingLayout({ children }: { children: ReactNode }) {
             <button
               type="button"
               className="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs inset-ring inset-ring-gray-300 hover:bg-gray-50 dark:bg-white/10 dark:text-white dark:shadow-none dark:inset-ring-white/5 dark:hover:bg-white/20"
-              onClick={() => router.push("/")}
+              onClick={() => router.back()}
             >
               뒤로가기
             </button>

@@ -26,7 +26,7 @@ export default function Home() {
       const request = store.getAll();
 
       request.onsuccess = () => {
-        resolve(request.result[request.result.length - 1] as SavedSetting);
+        resolve(request.result.at(-1) as SavedSetting);
       };
 
       request.onerror = () => {

@@ -5,8 +5,8 @@ import { Dayjs } from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { Field, Label } from "@/app/_component/Fieldset";
-import { Input } from "@/app/_component/Input";
+import { Field, Label } from "@/components/Fieldset";
+import { Input } from "@/components/Input";
 import { SettingContext } from "@/app/(setting)/layout";
 
 export default function Period() {
@@ -18,7 +18,7 @@ export default function Period() {
         <p className="text-gray-400">
           금주 시작 일자와
           <br />
-          금주 기간을 입력하세요.
+          금주 기간을 입력하세요
         </p>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
