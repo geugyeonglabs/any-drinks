@@ -1,7 +1,7 @@
 "use client";
 
 import { useContext, ChangeEvent } from "react";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -25,7 +25,7 @@ export default function Period() {
             label="시작 일자"
             value={setting?.startDate}
             onChange={(newValue: Dayjs | null) =>
-              setting?.setStartDate(newValue)
+              setting?.setStartDate(dayjs(newValue).startOf("day"))
             }
           />
         </LocalizationProvider>

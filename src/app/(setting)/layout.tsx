@@ -8,7 +8,7 @@ import {
   Dispatch,
   SetStateAction,
 } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSelectedLayoutSegment } from "next/navigation";
 import dayjs, { Dayjs } from "dayjs";
 import { ChevronDownIcon } from "@heroicons/react/16/solid";
 
@@ -18,11 +18,6 @@ type Setting = {
   period: string;
   setPeriod: Dispatch<SetStateAction<string>>;
 };
-
-const tabs = [
-  { name: "기간별 금주", href: "#", current: true },
-  { name: "요일별 금주", href: "#", current: false },
-];
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -84,9 +79,17 @@ export const SettingContext = createContext<Setting | null>(null);
 
 export default function SettingLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
+  const segment = useSelectedLayoutSegment();
 
-  const [startDate, setStartDate] = useState<Dayjs | null>(dayjs());
+  const [startDate, setStartDate] = useState<Dayjs | null>(
+    dayjs().startOf("day")
+  );
   const [period, setPeriod] = useState<string>("7");
+
+  const tabs = [
+    { name: "기간별 금주", href: "#", current: segment === "period" },
+    { name: "요일별 금주", href: "#", current: segment === "week" },
+  ];
 
   const handleTab = (e: ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value === "기간별 금주") {

@@ -12,7 +12,7 @@ import {
 } from "@/app/(setting)/layout";
 
 export default function Home() {
-  const today = dayjs();
+  const today = dayjs().startOf("day");
 
   const [savedStartDate, setSavedStartDate] = useState<Dayjs | null>();
   const [savedPeriod, setSavedPeriod] = useState<string>();
@@ -87,7 +87,7 @@ export default function Home() {
           <div>
             <span className="text-9xl text-blue-700">
               {savedStartDate
-                ?.add(Number(savedPeriod) + 1, "day")
+                ?.add(Number(savedPeriod), "day")
                 .diff(today, "day")}
               일
             </span>
